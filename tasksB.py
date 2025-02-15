@@ -1,5 +1,13 @@
 # Phase B: LLM-based Automation Agent for DataWorks Solutions
 
+import os
+
+def validate_path(path: str):
+    if not path.startswith("/data/"):
+        raise ValueError(f"Access to {path} is restricted to the /data directory.")
+
+
+
 # B1 & B2: Security Checks
 import os
 
