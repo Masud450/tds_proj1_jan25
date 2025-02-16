@@ -147,7 +147,6 @@ def a6_docs():
         os.makedirs(dirname, exist_ok=True)
         write_file(os.path.join(dirname, f"{file}.md"), text)
 
-
 def get_email(email):
     fake = Faker()
     fake.seed_instance(num(f"{email}:a7"))
@@ -167,8 +166,6 @@ def get_email(email):
         "body": fake.text(),
     }
     return email
-
-#hello
 
 def a7_email():
     """Generate an email file at email.txt"""

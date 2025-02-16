@@ -7,35 +7,68 @@ def validate_path(path: str):
         raise ValueError(f"Access to {path} is restricted to the /data directory.")
 
 
+def B12(filepath):
+    if not filepath.startswith('/data'):
+        raise PermissionError(f"Access to {filepath} is restricted to the /data directory.")
+    return True
 
 # B1 & B2: Security Checks
 import os
 
-def B12(filepath):
+'''def B12(filepath):
     if filepath.startswith('/data'):
         # raise PermissionError("Access outside /data is not allowed.")
         # print("Access outside /data is not allowed.")
         return True
     else:
-        return False
+        return False'''
+
+def B3(url, save_path):
+    try:
+        B12(save_path)
+        import requests
+        response = requests.get(url)
+        response.raise_for_status()  # Raise HTTPError for bad responses
+        with open(save_path, 'w') as file:
+            file.write(response.text)
+        return {"status": "success", "message": f"Data fetched from {url} to {save_path}"}
+    except Exception as e:
+        raise RuntimeError(f"Failed to fetch data: {e}")
 
 # B3: Fetch Data from an API
-def B3(url, save_path):
+'''def B3(url, save_path):
     if not B12(save_path):
         return None
     import requests
     response = requests.get(url)
     with open(save_path, 'w') as file:
-        file.write(response.text)
+        file.write(response.text)'''
 
 # B4: Clone a Git Repo and Make a Commit
-# def clone_git_repo(repo_url, commit_message):
-#     import subprocess
-#     subprocess.run(["git", "clone", repo_url, "/data/repo"])
-#     subprocess.run(["git", "-C", "/data/repo", "commit", "-m", commit_message])
+ #def clone_git_repo(repo_url, commit_message):
+    # import subprocess
+     #subprocess.run(["git", "clone", repo_url, "/data/repo"])
+     #subprocess.run(["git", "-C", "/data/repo", "commit", "-m", commit_message])
+
+def B5(db_path, query, output_filename):
+    try:
+        B12(db_path)
+        import sqlite3
+        conn = sqlite3.connect(db_path)
+        cur = conn.cursor()
+        cur.execute(query)
+        result = cur.fetchall()
+        conn.close()
+        B12(output_filename)  # Ensure output path is valid
+        with open(output_filename, 'w') as file:
+            file.write(str(result))
+        return {"status": "success", "result": result}
+    except Exception as e:
+        raise RuntimeError(f"Failed to execute SQL query: {e}")
+
 
 # B5: Run SQL Query
-def B5(db_path, query, output_filename):
+'''def B5(db_path, query, output_filename):
     if not B12(db_path):
         return None
     import sqlite3, duckdb
@@ -46,7 +79,7 @@ def B5(db_path, query, output_filename):
     conn.close()
     with open(output_filename, 'w') as file:
         file.write(str(result))
-    return result
+    return result'''
 
 # B6: Web Scraping
 def B6(url, output_filename):
