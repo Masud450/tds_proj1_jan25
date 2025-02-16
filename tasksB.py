@@ -103,12 +103,12 @@ def B7(image_path, output_path, resize=None):
     img.save(output_path)
 
 # B8: Audio Transcription
-# def B8(audio_path):
-#     import openai
-#     if not B12(audio_path):
-#         return None
-#     with open(audio_path, 'rb') as audio_file:
-#         return openai.Audio.transcribe("whisper-1", audio_file)
+def B8(audio_path):
+     import openai
+     if not B12(audio_path):
+         return None
+     with open(audio_path, 'rb') as audio_file:
+         return openai.Audio.transcribe("whisper-1", audio_file)
 
 # B9: Markdown to HTML Conversion
 def B9(md_path, output_path):
@@ -123,14 +123,15 @@ def B9(md_path, output_path):
         file.write(html)
 
 # B10: API Endpoint for CSV Filtering
-# from flask import Flask, request, jsonify
-# app = Flask(__name__)
-# @app.route('/filter_csv', methods=['POST'])
-# def filter_csv():
-#     import pandas as pd
-#     data = request.json
-#     csv_path, filter_column, filter_value = data['csv_path'], data['filter_column'], data['filter_value']
-#     B12(csv_path)
-#     df = pd.read_csv(csv_path)
-#     filtered = df[df[filter_column] == filter_value]
-#     return jsonify(filtered.to_dict(orient='records'))
+from flask import Flask, request, jsonify
+app = Flask(__name__)
+@app.route('/filter_csv', methods=['POST'])
+def filter_csv():
+     import pandas as pd
+     data = request.json
+     csv_path, filter_column, filter_value = data['csv_path'], data['filter_column'], data['filter_value']
+     B12(csv_path)
+     df = pd.read_csv(csv_path)
+     filtered = df[df[filter_column] == filter_value]
+     return jsonify(filtered.to_dict(orient='records'))
+     return {"message": "CSV filtered successfully", "output_file": output_path}
